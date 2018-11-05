@@ -8,7 +8,7 @@ class AuthorDateHolder extends React.Component {
         const { classes, fullname, email, creationDate } = this.props;
         return (
             <>
-                <Typography variant="caption" >
+                <Typography variant="body2" >
                     <AuthorHolder 
                         classes={classes}
                         fullname={fullname}
