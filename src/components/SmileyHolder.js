@@ -4,43 +4,51 @@ import WhatsHotIcon from '@material-ui/icons/Whatshot';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 import MoodIcon from '@material-ui/icons/Mood';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-
-const SmileyHolder = (props) => 
-(
-    <>
-      {props.happy !== undefined &&
-        <SmileyChip
-          icon={<MoodIcon />}
-          level={props.happy}
-          label='happy'
-          onClick={(label) => props.onClick(label)}
-        />
-      }
-      {props.sad !== undefined &&
-        <SmileyChip
-          icon={<SentimentVeryDissatisfiedIcon />}
-          level={props.sad}
-          label='sad'
-          onClick={(label) => props.onClick(label)}
-        />
-      }
-      {props.angry !== undefined &&
-        <SmileyChip
-          icon={<WhatsHotIcon />}
-          level={props.angry}
-          label='angry'
-          onClick={(label) => props.onClick(label)}
-        />
-      }
-      {props.surprised !== undefined &&
-        <SmileyChip
-          icon={<PriorityHighIcon />}
-          level={props.surprised}
-          label='surprised'
-          onClick={(label) => props.onClick(label)}
-        />
-      }
-    </>
-)
+class SmileyHolder extends React.Component {
+  
+render() {
+    const { happy, sad, angry, surprised, loadingState, onClick} = this.props
+    return (
+        <>
+          {happy !== undefined &&
+            <SmileyChip
+              icon={<MoodIcon />}
+              level={happy}
+              label='happy'
+              onClick={(label) => onClick(label)}
+              loading={loadingState['happy']}
+            />
+          }
+          {sad !== undefined &&
+            <SmileyChip
+              icon={<SentimentVeryDissatisfiedIcon />}
+              level={sad}
+              label='sad'
+              onClick={(label) => onClick(label)}
+              loading={loadingState['sad']}
+            />
+          }
+          {angry !== undefined &&
+            <SmileyChip
+              icon={<WhatsHotIcon />}
+              level={angry}
+              label='angry'
+              onClick={(label) => onClick(label)}
+              loading={loadingState['angry']}
+            />
+          }
+          {surprised !== undefined &&
+            <SmileyChip
+              icon={<PriorityHighIcon />}
+              level={surprised}
+              label='surprised'
+              onClick={(label) => onClick(label)}
+              loading={loadingState['surprised']}
+            />
+          }
+        </>
+    )
+  }
+}
 
 export default SmileyHolder

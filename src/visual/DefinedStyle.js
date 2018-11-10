@@ -11,6 +11,18 @@ const DefinedStyle = theme => {
             duration: theme.transitions.duration.leavingScreen,
         }),
         },
+        navBarSelectedBackground: {
+            backgroundColor: "#cdd5d8"
+        },
+        highlightedText: {
+            backgroundColor: "#e4caff"
+        },
+        noTextTransform: {
+            textTransform: "none"
+        },
+        homeButton: {
+            color: "white",  
+        },
         verticalAlign: {
             "display": "inline-flex", 
             "vertical-align": "middle"

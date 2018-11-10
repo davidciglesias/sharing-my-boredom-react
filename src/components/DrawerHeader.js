@@ -6,6 +6,7 @@ import DefinedStyle from './../visual/DefinedStyle';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { Typography } from '@material-ui/core';
 
 class DrawerHeader extends React.Component {
     render() {
@@ -13,7 +14,9 @@ class DrawerHeader extends React.Component {
         return (
             <>
               <div className={classNames(classes.drawerHeader)}>
-                These are lovely posts
+                <Typography>
+                    These are lovely posts
+                </Typography>
                 <IconButton onClick={onClick}>
                   {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                 </IconButton>

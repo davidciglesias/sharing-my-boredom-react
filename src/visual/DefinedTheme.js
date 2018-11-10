@@ -3,7 +3,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 const palette = {
     primary: { main: '#4527A0' },
-    secondary: { main: '#757575' }
+    secondary: { main: '#757575' },
   };
 const typography = { 
     useNextVariants: true

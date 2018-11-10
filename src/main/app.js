@@ -9,16 +9,23 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import PostHolder from './../components/PostHolder'
 import DefinedStyle from './../visual/DefinedStyle'
 import FilterByTitle from '../components/FilterByTitle';
 import PostList from '../components/PostList';
 import { address } from './../settings/server'
 import DefinedTheme from './../visual/DefinedTheme'
 import DrawerHeader from './../components/DrawerHeader'
-
-class PersistentDrawerLeft extends React.Component {
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import PostHolder from './../components/PostHolder';
+import AddNewPostHeader from '../components/AddNewPostHeader';
+import HomeHolder from './../components/HomeHolder';
+import NewPostHolder from './../components/NewPostHolder';
+import StyledNavLink from '../components/StyledNavLink';
+import Grid from '@material-ui/core/Grid';
+import StyledButtonBase from '../components/StyledButtonBase';
+class App extends React.Component {
   
    constructor(props) {
         super(props)
@@ -26,9 +33,10 @@ class PersistentDrawerLeft extends React.Component {
             open: true,
             currentPostId: -1,
             posts: [{"idpost": -1, "title": "loading"}],
-            allPosts: [],
+            loadedPosts: [],
             filteredPostsTerm: "",
             currentPostContent: {
+                title: "lol",
                 content: "Click on a post on the left to load it!"
             },
             loading: false
@@ -69,154 +77,152 @@ class PersistentDrawerLeft extends React.Component {
     this.setState({ open: false });
   };
 
-  handleClickOnStatus = async (type) => {
-    this.setState({
-      loading: true
-    })
-    await fetch(`${address}/putUpdate?id=${this.state.currentPostId}&column=${type}&change=1`, {
-      method: 'PUT'
-    }).then(() => {
-      this.setState((state) => {
-        var temp = state.currentPostContent
-        temp[type]++
-        return {
-          loading: false,
-          currentPostContent: temp
-        }
-      })
-    }).catch(() => {
-      this.setState({
-        loading: false
-      })
-    })
-  }
-
   handleChangePostFilter = (value) => {
     this.setState({
       filteredPostsTerm: value
     })
   }
 
-  handleClickOnItem = async (idpost) => {
-    this.setState({
-        loading: true
-    })
-    if(!this.state.allPosts.map((post) => post.idpost).includes(idpost)) {
-            await fetch(`${address}/getPostById?id=${idpost}`, {
-            method: 'GET',
-            headers: {
-            'Accept': 'text/plain',
-            }
-        }).then((response) => {
-            response.text().then((resultText) => {
-                let result = JSON.parse(resultText)
-                this.setState((state) => {
-                    return {
-                        currentPostId: idpost,
-                        currentPostContent: result,
-                        allPosts: [...state.allPosts,{"idpost": idpost, "content": result}],
-                        loading: false 
-                    }
-                })
-            }
-            )
-        })
-    }
-    else {
-        let currPost = this.state.allPosts.filter((post) => post.idpost === idpost)[0]
-        this.setState({
-            currentPostId: currPost.idpost,
-            currentPostContent: currPost.content,
-            loading: false
-        })
-    }
-  }
-
   render() {
     const { classes } = this.props
-    const { open, posts, currentPostContent, loading, filteredPostsTerm } = this.state
+    const { open, posts, loading, filteredPostsTerm } = this.state
     const theme = DefinedTheme
     return (
       <>
-        <MuiThemeProvider 
-          theme={theme}>
-          <div className={classes.root}>
-            <AppBar
-              position="fixed"
-              className={classNames(classes.appBar, {
-                [classes.appBarShift]: open,
-              })}
-            >
-              <Toolbar disableGutters={!open}>
-                <IconButton
-                  color="inherit"
-                  aria-label="Open drawer"
-                  onClick={this.handleDrawerOpen}
-                  className={classNames(classes.menuButton, open && classes.hide)}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" color="inherit" noWrap>
-                  Sharing My Boredom  
-                </Typography>
-                <Typography variant="h6">
-                    {loading ? <CircularProgress className={classNames(classes.progress)} color="secondary"/> : <></>}
-                </Typography>
-                
-              </Toolbar>
-            </AppBar>
-            <Drawer
-              className={classes.drawer}
-              variant="persistent"
-              anchor="left"
-              open={open}
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-            >
-              <DrawerHeader
-                theme={theme}
-                classes={classes}
-                onClick={() => this.handleDrawerClose()}
-              />
-              <Divider />
-              <FilterByTitle 
-                classes={classes}
-                placeholder={"Filter by Title"}
-                onChange={(value) => this.handleChangePostFilter(value)}
-              />
-              <Divider />
-                <PostList
-                  classes={classes}
-                  filteredPostsTerm={filteredPostsTerm}
-                  posts={posts}
+        <Router>
+          <MuiThemeProvider 
+            theme={theme}>
+            <div className={classes.root}>
+            
+              <AppBar
+                position="fixed"
+                className={classNames(classes.appBar, {
+                  [classes.appBarShift]: open,
+                })}
+              >
+                <Toolbar disableGutters={!open}>
+                  <IconButton
+                    color="inherit"
+                    aria-label="Open drawer"
+                    onClick={this.handleDrawerOpen}
+                    className={classNames(classes.menuButton, open && classes.hide)}
+                  >
+                    <MenuIcon/>
+                  </IconButton>
+                  <StyledButtonBase
+                    color="inherit"
+                    aria-label="Home"
+                    className={classNames(classes.homeButton, classes.noTextTransform)}
+                  >
+                    <StyledNavLink 
+                      to={{
+                          pathname: `/`,
+                      }} 
+                      className={classNames(classes.homeButton, classes.verticalAlign)}  
+                    >
+                      <Grid 
+                        container 
+                        spacing={16}
+                        alignItems={"center"}
+                      >
+                        <Grid item>
+                          <Typography variant="h6" color="inherit" noWrap>
+                            Sharing My Boredom  
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <HomeIcon/>
+                        </Grid>
+                      </Grid>
+                    </StyledNavLink>
+                  </StyledButtonBase>
+                  <Typography variant="h6">
+                      {loading ? <CircularProgress className={classNames(classes.progress)} color="secondary"/> : <></>}
+                  </Typography>
+                </Toolbar>
+              </AppBar>
+              <Drawer
+                className={classes.drawer}
+                variant="persistent"
+                anchor="left"
+                open={open}
+                classes={{
+                  paper: classes.drawerPaper,
+                }}
+              >
+                <DrawerHeader
                   theme={theme}
-                  onClick={(item) => this.handleClickOnItem(item)}
+                  classes={classes}
+                  onClick={() => this.handleDrawerClose()}
                 />
-            </Drawer>
-            <main
-              className={classNames(classes.content, {
-                [classes.contentShift]: open,
-              })}
-            >
-            <div className={classes.drawerHeader} />
-              <PostHolder
-                classes={classes}
-                theme={theme}
-                currentPostContent={currentPostContent}
-                onStatusClick={(label) => this.handleClickOnStatus(label)}
-              />
-            </main>
-          </div>
-        </MuiThemeProvider>
+                <Divider />
+                <AddNewPostHeader
+                  theme={theme}
+                  classes={classes}
+                  onClick={() => this.handleDrawerClose()}
+                />
+                <Divider />
+                {loading 
+                ? 
+                <>
+                  <CircularProgress></CircularProgress>
+                </>
+                :
+                <>
+                  <FilterByTitle 
+                  classes={classes}
+                  placeholder={"Filter by Title"}
+                  onChange={(value) => this.handleChangePostFilter(value)}
+                  />
+                  <Divider /> 
+                  <PostList
+                    classes={classes}
+                    filteredPostsTerm={filteredPostsTerm}
+                    posts={posts}
+                    theme={theme}
+                  />
+                </>
+                }
+              </Drawer>
+              <main
+                className={classNames(classes.content, {
+                  [classes.contentShift]: open,
+                })}
+              >
+                <div className={classes.drawerHeader} />
+                <Route path="/post" exact render={(routeProps) =>
+                  (<PostHolder
+                    routeProps={routeProps}
+                    classes={classes}
+                    theme={theme}
+                  />)}
+                />
+                <Route path="/" exact render={(routeProps) =>
+                  (<HomeHolder
+                    routeProps={routeProps}
+                    classes={classes}
+                    theme={theme}
+                  />)}
+                />
+                <Route path="/newPost" exact render={(routeProps) =>
+                  (<NewPostHolder
+                    routeProps={routeProps}
+                    classes={classes}
+                    theme={theme}
+                  />)}
+                />
+              </main>
+            </div>
+          </MuiThemeProvider>
+        </Router>
       </>
     );
   }
 }
 
-PersistentDrawerLeft.propTypes = {
+App.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(DefinedStyle, { withTheme: true })(PersistentDrawerLeft);
+export default withStyles(DefinedStyle, { withTheme: true })(App)
