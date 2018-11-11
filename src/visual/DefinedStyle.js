@@ -1,4 +1,4 @@
-const drawerWidth = 240;
+const drawerWidth = 340;
 
 const DefinedStyle = theme => {
     return ({
@@ -53,11 +53,14 @@ const DefinedStyle = theme => {
         width: drawerWidth,
         },
         drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-end',
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 8px',
+            ...theme.mixins.toolbar,
+            justifyContent: 'flex-end',
+        },
+        formControl: {
+            width: "100%",
         },
         content: {
         flexGrow: 1,

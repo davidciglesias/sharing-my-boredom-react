@@ -10,11 +10,13 @@ class AuthorHolder extends React.Component {
     const {classes, fullname, email} = this.props
     return(
         <>
-        {fullname !== undefined && `${fullname} - `}
-        {email !== undefined && 
-        <a href={`mailto:${email}`}><MailIcon className={classNames(classes.verticalAlign)}/></a>
-        }
+            {fullname !== undefined && `${fullname}`}
+            {email !== undefined && ` - `}
+            {email !== undefined && 
+            <a href={`mailto:${email}`}><MailIcon className={classNames(classes.verticalAlign)}/></a>
+            }
         </>
+
     )}
 }
 

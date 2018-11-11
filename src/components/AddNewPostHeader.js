@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import StyledButtonBase from '../components/StyledButtonBase';
 import classNames from 'classnames';
 import StyledNavLink from './../components/StyledNavLink'
 
@@ -16,38 +15,33 @@ class AddNewPostHeader extends React.Component {
         return (
             <>
 
-                    <StyledNavLink 
-                      to={{
-                          pathname: `/newPost`,
-                      }} 
-                      color="inherit"
-                      className={classNames(classes.verticalAlign)}  
+                <StyledNavLink 
+                    to={{
+                        pathname: `/newPost`,
+                    }} 
+                    color="inherit"
+                    className={classNames(classes.drawerHeader, classes.verticalAlign, isTheItemActive ? classNames(classes.navBarSelectedBackground) : {})}
+                >
+                    <Grid
+                        container
+                        alignItems={"center"}
+                        justify={"center"}
+                        direction={"row"}
                     >
-                        <StyledButtonBase 
-                            style={{padding: "10px", width: "100%", height: "100%"}}
-                            className={classNames(classes.noTextTransform, isTheItemActive ? classNames(classes.navBarSelectedBackground) : {})}
+                        <Grid item>
+                            <Typography
+                                component="span"
+                                variant="subtitle1"
+                                color="inherit"
                             >
-                            <Grid
-                                container
-                                alignItems={"center"}
-                                justify={"center"}
-                                direction={"row"}
-                            >
-                            <Grid item>
-                                <Typography
-                                    component="span"
-                                    variant="subtitle1"
-                                    color="inherit"
-                                >
-                                    Contribute here
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <AddIcon/>
-                            </Grid>
-                            </Grid>
-                        </StyledButtonBase>
-                    </StyledNavLink>
+                                Contribute here
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <AddIcon/>
+                        </Grid>
+                    </Grid>
+                </StyledNavLink>
                 
             </>
         )

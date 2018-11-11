@@ -5,7 +5,8 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import classNames from 'classnames';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import HighLighter from 'react-highlighter';
+//import HighLighter from 'react-highlighter';
+import HighLighter from './Highlighter'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import DefinedStyle from './../visual/DefinedStyle';
@@ -33,7 +34,7 @@ class PostList extends React.Component {
                                 isActive={this.isTheItemActive}
                             >
                                 <ListItem 
-                                    button 
+                                    button
                                     className={isTheItemActive ? classNames(classes.navBarSelectedBackground) : ""}
                                 >
                                     <ListItemIcon>
@@ -42,13 +43,10 @@ class PostList extends React.Component {
                                         : <MailIcon className={classNames(classes.verticalAlign)} />}
                                     </ListItemIcon>
                                     <HighLighter 
-                                        search={filteredPostsTerm}
-                                        ignoreDiacritics={true}
-                                        matchClass={classNames(classes.highlightedText)}
-                                    >
-                                        {text.title}
-                                    </HighLighter>
-                                    
+                                        searchTerm={filteredPostsTerm}
+                                        text={text.title}
+                                        highlightedItemClass={classNames(classes.highlightedText)}
+                                    />                                    
                                 </ListItem> 
                             </StyledNavLink>
                         )

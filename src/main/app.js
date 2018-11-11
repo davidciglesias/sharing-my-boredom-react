@@ -24,7 +24,6 @@ import HomeHolder from './../components/HomeHolder';
 import NewPostHolder from './../components/NewPostHolder';
 import StyledNavLink from '../components/StyledNavLink';
 import Grid from '@material-ui/core/Grid';
-import StyledButtonBase from '../components/StyledButtonBase';
 class App extends React.Component {
   
    constructor(props) {
@@ -43,29 +42,33 @@ class App extends React.Component {
         }
     }
 
-  componentDidMount = async () => {
-    this.setState({
-      loading: true
-    })
-    await fetch(`${address}/getAllPosts`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'text/plain',
-        }
-    }).then((response) => {
-        response.text().then((resultText) => {
-            let result = JSON.parse(resultText)
-            this.setState({
-                posts: result,
-                loading: false
-            })
-          }
-        )
-    }).catch(() => {
+    updatePostList = async() => {
       this.setState({
-        loading: false
+        loading: true
       })
-    })
+      await fetch(`${address}/getAllPosts`, {
+          method: 'GET',
+          headers: {
+            'Accept': 'text/plain',
+          }
+      }).then((response) => {
+          response.text().then((resultText) => {
+              let result = JSON.parse(resultText)
+              this.setState({
+                  posts: result,
+                  loading: false
+              })
+            }
+          )
+      }).catch(() => {
+        this.setState({
+          loading: false
+        })
+      })
+    }
+
+  componentDidMount = () => {
+    this.updatePostList()
   }
   
 
@@ -93,7 +96,6 @@ class App extends React.Component {
           <MuiThemeProvider 
             theme={theme}>
             <div className={classes.root}>
-            
               <AppBar
                 position="fixed"
                 className={classNames(classes.appBar, {
@@ -109,7 +111,7 @@ class App extends React.Component {
                   >
                     <MenuIcon/>
                   </IconButton>
-                  <StyledButtonBase
+                  <div
                     color="inherit"
                     aria-label="Home"
                     className={classNames(classes.homeButton, classes.noTextTransform)}
@@ -135,7 +137,7 @@ class App extends React.Component {
                         </Grid>
                       </Grid>
                     </StyledNavLink>
-                  </StyledButtonBase>
+                  </div>
                   <Typography variant="h6">
                       {loading ? <CircularProgress className={classNames(classes.progress)} color="secondary"/> : <></>}
                   </Typography>
@@ -156,11 +158,11 @@ class App extends React.Component {
                   onClick={() => this.handleDrawerClose()}
                 />
                 <Divider />
-                <AddNewPostHeader
-                  theme={theme}
-                  classes={classes}
-                  onClick={() => this.handleDrawerClose()}
-                />
+                  <AddNewPostHeader
+                    theme={theme}
+                    classes={classes}
+                    onClick={() => this.handleDrawerClose()}
+                  />
                 <Divider />
                 {loading 
                 ? 
@@ -209,6 +211,7 @@ class App extends React.Component {
                     routeProps={routeProps}
                     classes={classes}
                     theme={theme}
+                    updatePostList={() => this.updatePostList()}
                   />)}
                 />
               </main>
