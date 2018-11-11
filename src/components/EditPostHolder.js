@@ -1,13 +1,15 @@
 import React from 'react'
 import {address} from '../settings/server'
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
+import FormControl from '@material-ui/core/FormControl'
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid'
 import marked from 'marked'
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import queryString from 'query-string';
+import Paper from '@material-ui/core/Paper'
+import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import queryString from 'query-string'
+import VisibilityIcon from '@material-ui/icons/Visibility'
+import Link from 'react-router-dom/Link'
 
 class EditPostHolder extends React.Component {
 
@@ -117,6 +119,15 @@ class EditPostHolder extends React.Component {
             <> 
               <p>
                 {`Editing post ${postId} - Previous title: ${originalContent.title}`}
+                <Link
+                to={{
+                pathname: `/post`,
+                search: `?id=${postId}`
+                }} 
+                // className={classNames(props.classes.verticalAlign)}
+                >
+                  <VisibilityIcon/>
+                </Link>
               </p>
               <TextField
                     id="post-title"

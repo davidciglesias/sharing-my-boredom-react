@@ -6,7 +6,6 @@ import SmileyHolder from './SmileyHolder';
 import { address } from './../settings/server'
 import queryString from 'query-string'
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Link from 'react-router-dom/Link';
 
 class PostHolder extends React.Component {
   constructor(props) {
@@ -135,7 +134,11 @@ class PostHolder extends React.Component {
     return (
       <>  
         <div>{loading ? <LinearProgress/> : <span></span>}</div>
-        <TitleHolder title={currentPostContent.title}/>
+        <TitleHolder 
+          title={currentPostContent.title}
+          classes={classes}
+          currentPostId={currentPostId}
+        />
         <ContentHolder content={currentPostContent.content}/>
         <AuthorDateHolder
           classes={classes}
@@ -152,14 +155,7 @@ class PostHolder extends React.Component {
           onClick={(label) => this.handleClickOnStatus(label)}
           loadingState={loadingStates}
         />
-        <Link
-            to={{
-              pathname: `/putUpdatePost`,
-              search: `?postId=${currentPostId}`
-            }} 
-          >
-          Edit
-        </Link>
+        
       </>
       )
     }
