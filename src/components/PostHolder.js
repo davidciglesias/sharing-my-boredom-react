@@ -6,6 +6,7 @@ import SmileyHolder from './SmileyHolder';
 import { address } from './../settings/server'
 import queryString from 'query-string'
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Link from 'react-router-dom/Link';
 
 class PostHolder extends React.Component {
   constructor(props) {
@@ -105,7 +106,7 @@ class PostHolder extends React.Component {
         [type]: true
       } 
     })
-    await fetch(`${address}/putUpdate?id=${queryString.parse(window.location.search).id}&column=${type}&change=1`, {
+    await fetch(`${address}/putUpdateStatus?id=${queryString.parse(window.location.search).id}&column=${type}&change=1`, {
       method: 'PUT'
     }).then(() => {
       this.setState((state) => {
@@ -129,7 +130,7 @@ class PostHolder extends React.Component {
   
   render() {
     const { classes, theme } = this.props
-    const { currentPostContent, loading, loadingStates } = this.state
+    const { currentPostContent, currentPostId, loading, loadingStates } = this.state
 
     return (
       <>  
@@ -151,6 +152,14 @@ class PostHolder extends React.Component {
           onClick={(label) => this.handleClickOnStatus(label)}
           loadingState={loadingStates}
         />
+        <Link
+            to={{
+              pathname: `/putUpdatePost`,
+              search: `?postId=${currentPostId}`
+            }} 
+          >
+          Edit
+        </Link>
       </>
       )
     }

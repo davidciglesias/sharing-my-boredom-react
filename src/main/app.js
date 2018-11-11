@@ -25,6 +25,7 @@ import HomeHolder from './../components/HomeHolder';
 import NewPostHolder from './../components/NewPostHolder';
 import StyledNavLink from '../components/StyledNavLink';
 import Grid from '@material-ui/core/Grid';
+import EditPostHolder from './../components/EditPostHolder';
 
 const API_URL = 'http://localhost:8080'
 const socket = io(API_URL)
@@ -300,6 +301,14 @@ class App extends React.Component {
                 />
                 <Route path="/newPost" exact render={(routeProps) =>
                   (<NewPostHolder
+                    routeProps={routeProps}
+                    classes={classes}
+                    theme={theme}
+                    updatePostList={() => this.updatePostList()}
+                  />)}
+                />
+                <Route path="/putUpdatePost" render={(routeProps) =>
+                  (<EditPostHolder
                     routeProps={routeProps}
                     classes={classes}
                     theme={theme}
