@@ -18,14 +18,18 @@ import { address } from './../settings/server'
 import DefinedTheme from './../visual/DefinedTheme'
 import DrawerHeader from './../components/DrawerHeader'
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import io from 'socket.io-client'
 import PostHolder from './../components/PostHolder';
 import AddNewPostHeader from '../components/AddNewPostHeader';
 import HomeHolder from './../components/HomeHolder';
 import NewPostHolder from './../components/NewPostHolder';
 import StyledNavLink from '../components/StyledNavLink';
 import Grid from '@material-ui/core/Grid';
+
+const API_URL = 'http://localhost:8080'
+const socket = io(API_URL)
+
 class App extends React.Component {
-  
    constructor(props) {
         super(props)
         this.state = {
@@ -38,7 +42,9 @@ class App extends React.Component {
                 title: "lol",
                 content: "Click on a post on the left to load it!"
             },
-            loading: false
+            loading: false,
+            user: {},
+            disabled: ''
         }
     }
 
@@ -69,15 +75,19 @@ class App extends React.Component {
 
   componentDidMount = () => {
     this.updatePostList()
+    socket.on('user', user => {
+      this.popup.close()
+      this.setState({user})
+    })
   }
   
 
   handleDrawerOpen = () => {
-    this.setState({ open: true });
+    this.setState({ open: true })
   };
 
   handleDrawerClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false })
   };
 
   handleChangePostFilter = (value) => {
@@ -86,9 +96,64 @@ class App extends React.Component {
     })
   }
 
+  checkPopup() {
+    const check = setInterval(() => {
+      const { popup } = this
+      if (!popup || popup.closed || popup.closed === undefined) {
+        clearInterval(check)
+        this.setState({ disabled: ''})
+      }
+    }, 1000)
+  }
+
+  openPopup() {
+    const width = 600, height = 600
+    const left = (window.innerWidth / 2) - (width / 2)
+    const top = (window.innerHeight / 2) - (height / 2)
+    
+    const url = `${API_URL}/google?socketId=${socket.id}`
+    // const url = `${API_URL}/twitter?socketId=${socket.id}`
+
+    return window.open(url, '',       
+      `toolbar=no, location=no, directories=no, status=no, menubar=no, 
+      scrollbars=no, resizable=no, copyhistory=no, width=${width}, 
+      height=${height}, top=${top}, left=${left}`
+    )
+  }  
+  
+  startAuth() {
+    if (!this.state.disabled) {  
+      this.popup = this.openPopup()  
+      this.checkPopup()
+      this.setState({disabled: 'disabled'})
+    }
+  }
+
+  async handleLogout() {
+    await fetch(`${address}/logout`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'text/plain',
+      }
+    }).then(() => {
+      this.setState({
+          user: {},
+      })
+    }).catch(() => {
+      this.setState({
+        luser: {}
+      })
+    })
+  }
+
+  closeCard() {
+    //this.setState({user: {}})
+  }
+
   render() {
     const { classes } = this.props
-    const { open, posts, loading, filteredPostsTerm } = this.state
+    const { open, posts, loading, filteredPostsTerm, user, disabled } = this.state
+    const { name, photo } = user
     const theme = DefinedTheme
     return (
       <>
@@ -127,13 +192,40 @@ class App extends React.Component {
                         spacing={16}
                         alignItems={"center"}
                       >
-                        <Grid item>
+                        <Grid item xs={8}>
                           <Typography variant="h6" color="inherit" noWrap>
                             Sharing My Boredom  
                           </Typography>
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={2}>
                           <HomeIcon/>
+                        </Grid>
+                        <Grid item xs={2}>
+                          <div className={'container'}>
+                            {/* Show the user if it exists. Otherwise show the login button */}
+                            {name
+                              ? <div className={'card'}>              
+                                  <img src={photo} alt={name} />
+                                  <IconButton
+                                    name={'times-circle'}
+                                    className={'close'}
+                                    onClick={() => this.handleLogout()}
+                                  >
+                                    <HomeIcon className={classNames(classes.homeButton)}/>
+                                  </IconButton>
+                                  <h4>{`@${name}`}</h4>
+                                </div>
+                              : <div className={'button'}>
+                                  <button 
+                                    onClick={() => this.startAuth()} 
+                                    className={`twitter ${disabled}`}
+                                  >
+                                    <HomeIcon
+                                      name={'twitter'}
+                                    />
+                                  </button>
+                                </div>
+                            }</div>
                         </Grid>
                       </Grid>
                     </StyledNavLink>

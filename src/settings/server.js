@@ -1,3 +1,3 @@
-const address = "http://46.6.2.213:2005"
+const address = "http://localhost:8080"
 
 export { address }
