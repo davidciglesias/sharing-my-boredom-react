@@ -6,9 +6,7 @@ const ContentHolder = (props) => {
     let markedText = props.content === undefined ? "" : marked(props.content)
     return (
         <>
-            <Typography paragraph variant="body2" dangerouslySetInnerHTML={{__html: markedText}}>
-                
-            </Typography>
+            <Typography paragraph variant="body2" dangerouslySetInnerHTML={{__html: markedText}}/>
         </>
     )
 }

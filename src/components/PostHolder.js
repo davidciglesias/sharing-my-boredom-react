@@ -145,7 +145,7 @@ class PostHolder extends React.Component {
           theme={theme}
           fullname={currentPostContent.fullname}
           email={currentPostContent.email}
-          creationDate={currentPostContent.creationDate}
+          creationDate={currentPostContent.creationdate}
         />
         <SmileyHolder 
           happy={currentPostContent.happy}
