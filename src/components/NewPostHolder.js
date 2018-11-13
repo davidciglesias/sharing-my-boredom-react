@@ -39,7 +39,7 @@ class NewPostHolder extends React.Component {
             let result = JSON.parse(resultText)
             this.setState({
                 authors: result,
-                currentAuthorId: result.length > 0 ? result[0].idauthor : -1,
+                currentAuthorId: result.length > 0 ? result[0].iduser : -1,
                 loading: false,
             })
           }
@@ -86,7 +86,8 @@ class NewPostHolder extends React.Component {
         content: this.state.markdownText
       }),
       headers:{
-        'Content-Type': 'text/plain'
+        'Content-Type': 'application/json',
+        'Charset': 'utf-8',
       }
     }).then(() => {
       this.setState({
@@ -123,7 +124,7 @@ class NewPostHolder extends React.Component {
               >
                 {authors.map((author, index) => {
                   return (
-                    <MenuItem key={index} value={author.idauthor}>
+                    <MenuItem key={index} value={author.iduser}>
                       {author.fullname}
                     </MenuItem>
                   )})

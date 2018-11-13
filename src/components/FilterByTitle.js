@@ -23,7 +23,6 @@ class FilterByTitle extends React.Component {
     }
     
     deletePostFilter = (event, input, onChange) => {
-        console.log(this.closeButton)
         event.preventDefault()
         event.stopPropagation()
         input.current.value = ""
@@ -36,8 +35,9 @@ class FilterByTitle extends React.Component {
             <>
                 <Grid 
                     direction="row"
-                    container 
-                    justify="center"
+                    container
+                    spacing={8}
+                    justify="space-evenly"
                     onClick={() => this.focusPostFilter(this.textInput)}
                     className={classNames(classes.drawerHeader)}
                 >
@@ -49,6 +49,7 @@ class FilterByTitle extends React.Component {
                             placeholder={placeholder}
                             onChange={(event) => { onChange(event.target.value)}}
                             inputRef={this.textInput}
+                            className={classNames(classes.verticalAlign)}
                         />
                     </Grid>
                     <Grid item xs={2}>

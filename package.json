@@ -5,6 +5,8 @@
   "dependencies": {
     "@material-ui/core": "^3.3.2",
     "@material-ui/icons": "^3.0.1",
+    "aws-sdk": "^2.354.0",
+    "bcrypt": "^3.0.2",
     "lodash": "^4.17.11",
     "marked": "^0.5.1",
     "moment": "^2.22.2",

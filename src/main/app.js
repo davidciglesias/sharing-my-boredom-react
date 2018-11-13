@@ -8,6 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -20,12 +21,14 @@ import DrawerHeader from './../components/DrawerHeader'
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import io from 'socket.io-client'
 import PostHolder from './../components/PostHolder';
-import AddNewPostHeader from '../components/AddNewPostHeader';
+import HeaderButton from '../components/HeaderButton';
 import HomeHolder from './../components/HomeHolder';
 import NewPostHolder from './../components/NewPostHolder';
 import StyledNavLink from '../components/StyledNavLink';
 import Grid from '@material-ui/core/Grid';
 import EditPostHolder from './../components/EditPostHolder';
+import NewUserHolder from '../components/NewUserHolder';
+import LoginButtonDialog from '../components/LoginButtonDialog'
 
 const API_URL = 'http://localhost:8080'
 const socket = io(API_URL)
@@ -193,7 +196,7 @@ class App extends React.Component {
                         spacing={16}
                         alignItems={"center"}
                       >
-                        <Grid item xs={8}>
+                        <Grid item xs={6}>
                           <Typography variant="h6" color="inherit" noWrap>
                             Sharing My Boredom  
                           </Typography>
@@ -228,6 +231,9 @@ class App extends React.Component {
                                 </div>
                             }</div>
                         </Grid>
+                        <Grid item xs={2}>
+                          <LoginButtonDialog/>
+                        </Grid>
                       </Grid>
                     </StyledNavLink>
                   </div>
@@ -251,11 +257,23 @@ class App extends React.Component {
                   onClick={() => this.handleDrawerClose()}
                 />
                 <Divider />
-                  <AddNewPostHeader
-                    theme={theme}
-                    classes={classes}
-                    onClick={() => this.handleDrawerClose()}
-                  />
+                <HeaderButton
+                  theme={theme}
+                  classes={classes}
+                  text={"Add a new post"}
+                  route={"/postNewPost"}
+                >
+                  <AddIcon/>
+                </HeaderButton>
+                <Divider />
+                <HeaderButton
+                  theme={theme}
+                  classes={classes}
+                  text={"Add a new user"}
+                  route={"/postNewUser"}
+                >
+                  <AddIcon/>
+                </HeaderButton>
                 <Divider />
                 {loading 
                 ? 
@@ -299,7 +317,7 @@ class App extends React.Component {
                     theme={theme}
                   />)}
                 />
-                <Route path="/newPost" exact render={(routeProps) =>
+                <Route path="/postNewPost" exact render={(routeProps) =>
                   (<NewPostHolder
                     routeProps={routeProps}
                     classes={classes}
@@ -309,6 +327,14 @@ class App extends React.Component {
                 />
                 <Route path="/putUpdatePost" render={(routeProps) =>
                   (<EditPostHolder
+                    routeProps={routeProps}
+                    classes={classes}
+                    theme={theme}
+                    updatePostList={() => this.updatePostList()}
+                  />)}
+                />
+                <Route path="/postNewUser" render={(routeProps) =>
+                  (<NewUserHolder
                     routeProps={routeProps}
                     classes={classes}
                     theme={theme}

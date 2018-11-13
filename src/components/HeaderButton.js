@@ -1,44 +1,44 @@
 import React from 'react'
-import AddIcon from '@material-ui/icons/Add';
 import DefinedStyle from '../visual/DefinedStyle';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
-import StyledNavLink from './../components/StyledNavLink'
+import StyledNavLink from './StyledNavLink'
 
-class AddNewPostHeader extends React.Component {
+class HeaderButton extends React.Component {
     render() {
-        const { classes } = this.props
-        let isTheItemActive = window.location.pathname === '/newPost'
+        
+        const { classes, text, route } = this.props
+        let isTheItemActive = window.location.pathname === route
         return (
             <>
-
                 <StyledNavLink 
                     to={{
-                        pathname: `/newPost`,
+                        pathname: route,
                     }} 
                     color="inherit"
                     className={classNames(classes.drawerHeader, classes.verticalAlign, isTheItemActive ? classNames(classes.navBarSelectedBackground) : {})}
                 >
                     <Grid
                         container
+                        spacing={24}
                         alignItems={"center"}
                         justify={"center"}
                         direction={"row"}
                     >
-                        <Grid item>
+                        <Grid>
                             <Typography
                                 component="span"
                                 variant="subtitle1"
                                 color="inherit"
                             >
-                                Contribute here
+                            {text}
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <AddIcon/>
+                            {this.props.children}
                         </Grid>
                     </Grid>
                 </StyledNavLink>
@@ -48,9 +48,9 @@ class AddNewPostHeader extends React.Component {
     }
 }
 
-AddNewPostHeader.propTypes = {
+HeaderButton.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired
 }
 
-export default withStyles(DefinedStyle, {withTheme: true})(AddNewPostHeader)
+export default withStyles(DefinedStyle, {withTheme: true})(HeaderButton)
