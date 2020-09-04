@@ -6,7 +6,7 @@
     "@material-ui/core": "^3.3.2",
     "@material-ui/icons": "^3.0.1",
     "lodash": "^4.17.11",
-    "marked": "^0.6.1",
+    "marked": "^0.7.0",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23",
     "prop-types": "^15.6.2",
